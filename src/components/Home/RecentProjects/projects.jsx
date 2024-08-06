@@ -1,6 +1,7 @@
 import React from "react";
 import "./projects.css";
 import devProjects from "./devProjects";
+import npmProjects from "./npmPackages";
 import { Link } from "react-router-dom";
 
 function createCard(element) {
@@ -17,6 +18,13 @@ function createCard(element) {
     />
   );
 }
+function ConditionalLink({ children, condition, ...props }) {
+  return !!condition && props.to ? (
+    <Link {...props}>{children}</Link>
+  ) : (
+    <>{children}</>
+  );
+}
 
 function Card(props) {
   return (
@@ -24,7 +32,11 @@ function Card(props) {
       className="m-5 col-lg-5 col-xs-12"
       ontouchstart="this.classList.toggle('hover');"
     >
-      <Link to={{ pathname: `${props.link}` }} target="_blank">
+      <ConditionalLink
+        condition={props.link}
+        to={{ pathname: `${props.link}` }}
+        target="_blank"
+      >
         <div class="p-3 container ">
           <div
             class="front"
@@ -41,7 +53,7 @@ function Card(props) {
             </div>
           </div>
         </div>
-      </Link>
+      </ConditionalLink>
     </div>
   );
 }
@@ -55,6 +67,12 @@ export const projects = () => {
         </h2>
       </div>
       <div className="row ">{devProjects.map(createCard)}</div>
+      <div class="container text-center">
+        <h2 className="title" id="dev1">
+          Couple of NPM packages published
+        </h2>
+      </div>
+      <div className="row ">{npmProjects.map(createCard)}</div>
     </>
   );
 };
